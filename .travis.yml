@@ -1,0 +1,14 @@
+language: cpp
+dist: xenial
+
+script:
+  - curl -o OpenWrt-ImageBuilder-15.05.1-ar71xx-generic.Linux-x86_64.tar.bz2 https://archive.openwrt.org/chaos_calmer/15.05.1/ar71xx/generic/OpenWrt-ImageBuilder-15.05.1-ar71xx-generic.Linux-x86_64.tar.bz2
+  - tar jxf OpenWrt-ImageBuilder-15.05.1-ar71xx-generic.Linux-x86_64.tar.bz2
+  - cd OpenWrt-ImageBuilder-15.05.1-ar71xx-generic.Linux-x86_64
+  - ls -la
+# - sed -i -e 's,/\(usr\|lib\|etc\)/,/###/,g' ./staging_dir/host/lib/libc.so.6
+  - mkdir -p files/etc/config
+  - make info
+  - make image PROFILE="TLMR3020" PACKAGES="-ppp -ppp-mod-pppoe -ip6tables -odhcp6c -kmod-ipv6 -kmod-ip6tables -odhcpd-ipv6only -odhcpd -kmod-ath -kmod-ath9k-common -kmod-ath9k -hostapd-common -libip6tc kmod-usb-storage kmod-usb-ohci kmod-usb2 kmod-fs-ext4 kmod-fs-vfat block-mount kmod-gpio-button-hotplug kmod-usb-storage-extras -luci fdisk"
+  - cd bin/ar71xx
+  - ls -la --block-size=M
